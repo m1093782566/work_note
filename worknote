@@ -1,0 +1,64 @@
+1, You are not authorized to perform the requested action: admin_required (Disable debug mode to suppress these details.) (HTTP 403)
+表示你还没有通过keystone的用户认证。解决：source一下keystone的环境变量。
+
+2, 调用ceilometer API时如果出现连接不上的情况（8777端口访问被拒绝），说明ceilometer API daemon没有启动。解决：通过ps aux | grep ceilometer确认ceilometer daemons是不是真的没有启动，若猜想属实，则通过rejoin-screen或service重启ceilometer-api。
+
+3, 重新启动虚拟机后，发现调用ceilometer的meter-list得到compute.node.cpu的metrics，前提是在/etc/nova.config中添加下面这一行：
+compute_monitors = ComputeDriverCPUMonitor
+
+4, Nova does not generate the periodic notifications for all known instances by default. To enable these auditing events, set instance_usage_audit to true in the nova configuration file.
+
+5，change `notification_driver = messaging` to `notification_driver=cinder.openstack.common.notifier.rpc_notifier` 
+
+Cinder does not generate notifications by default. To enable these auditing events, set the above in the cinder configuration file.
+
+6，change database backend as mongodb
+
+https://github.com/openstack/ceilometer/blob/master/doc/source/install/manual.rst#mongodb
+
+7，有些metric需要你做操作才会有显示出来（特别是来自notification的一些信息，比如image.download）。
+
+8，重装devstack的时候，首先要将OS_SERVICE等环境变量清空。然后在执行stack.sh脚本的时候可能会出现与glanceclient(RROR: glanceclient.common.http Request returned failure status 404.)或者n-x**相关的错误，而且不同执行时间肯能会出现不一样的错误。解决：重启虚拟机？执行unstack.sh脚本？执行clean.sh脚本？总之，这些问题都不是大问题。
+
+9，刚刚装好的devstack，meter-list命令看不到任何的metrics。需要你一点点地操作然后一点点地配置才会有数据。
+
+10，devstack/stackrc定义了安装devstack过程中需要的一些变量，包括git_repo，enable_service等。
+
+11，如果出现下述错误：
+014-10-31 02:36:01.956 | ++ keystone token-get
+2014-10-31 02:36:01.956 | ++ grep ' id '
+2014-10-31 02:36:01.957 | ++ get_field 2
+2014-10-31 02:36:01.957 | ++ local data field
+2014-10-31 02:36:01.957 | ++ read data
+2014-10-31 02:36:02.617 | Configuration error: Client configured to run without a service catalog. Run the client using --os-auth-url or OS_AUTH_URL, instead of --os-endpoint or OS_SERVICE_ENDPOINT, for example.
+2014-10-31 02:36:02.644 | + TOKEN=
+2014-10-31 02:36:02.645 | + die_if_not_set 1153 TOKEN 'Keystone fail to get token'
+2014-10-31 02:36:02.645 | + local exitcode=0
+2014-10-31 02:36:02.650 | [Call Trace]
+2014-10-31 02:36:02.650 | ./stack.sh:1153:die_if_not_set
+2014-10-31 02:36:02.650 | /home/vcap/devstack/functions-common:25
+
+这是因为keystone的环境变量（OS_SERVICE_*）残留导致，使用下面的链接提供的方案清除这些环境变量。
+https://bugs.launchpad.net/devstack/+bug/1252576
+但使用上述方案后可能出现其它错误：
+
+2014-10-31 03:01:14.212 | Authorization Failed: An unexpected error prevented the server from fulfilling your request: No module named backends.sql (Disable debug mode to suppress these details.) (HTTP 500)
+2014-10-31 03:01:14.242 | + TOKEN=
+
+具体原因可能包括：旧的包（deb，pip）依赖，旧的配置文件（/etc/nova等）。我使用的方法是：执行devstack下的clean.sh脚本，并且配合apt-get autoremove删除旧的包链接。其实使用apt-get install安装的软件都会在/var/cache下缓存deb包。然后再重启虚拟机，最后执行stack.sh脚本。
+
+注：devstack安装过程中的主要步骤包括：
+0，读入各种环境变量，其中一部分来自local.conf
+1，apt-get install
+2，pip
+以上的包的部分启动脚本放在/usr/local/bin里面。
+
+3，git clone git@openstack.org（大部分与github上面的不同）。
+
+4，配置/etc/...
+
+5，启动服务（nova-api等）
+
+6，调用各种api（比如glance-api上传镜像）
+
+7，建立／读／写数据库。
