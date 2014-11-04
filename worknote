@@ -62,3 +62,12 @@ https://bugs.launchpad.net/devstack/+bug/1252576
 6，调用各种api（比如glance-api上传镜像）
 
 7，建立／读／写数据库。
+
+11，devstack的日志放在：/opt/stack/logs/screen下，比如nova-api，ceilometer-api等。然后一部分放在/var/log下，比如ceilometer-api等，但这些参考意义不大，因为很过期。
+
+12，自己源码安装libvirt-1.1.2后，launch instance时出现下面错误：
+错误： 创建实例 "nova-1" 失败: 请稍后再试 [错误: Build of instance c054dd3f-3fe3-4f30-b24f-578c46f1b1c0 aborted: Flavor's disk is too small for requested image.].
+solutions: flavor:tiny, image:cirrors
+另外，2014-11-04 08:57:41.416 DEBUG oslo.db.api [req-bd49412c-4e51-43c5-b337-120635cffadd None None] Loading backend 'sqlalchemy' from 'nova.db.sqlalchemy.api' from (pid=11859) _load_backend /usr/local/lib/python2.7/dist-packages/oslo/db/api.py:182
+2014-11-04 08:57:41.963 DEBUG oslo.db.sqlalchemy.session [req-bd49412c-4e51-43c5-b337-120635cffadd None None] MySQL server mode set to STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION from (pid=11859) _check_effective_sql_mode /usr/local/lib/python2.7/dist-packages/oslo/db/sqlalchemy/session.py:508
+这些debug信息不是什么大问题。
