@@ -182,3 +182,14 @@ ceilometer-api service 启动命令(先kill占用端口的ceilometer-api进程)�
 2014-11-12 14:17:04.426 27476 TRACE ceilometer.compute.pollsters.memory   File "/opt/stack/ceilometer/ceilometer/compute/pollsters/memory.py", line 37, in get_samples
 2014-11-12 14:17:04.426 27476 TRACE ceilometer.compute.pollsters.memory     'usage': memory_info.usage}))
 2014-11-12 14:17:04.426 27476 TRACE ceilometer.compute.pollsters.memory AttributeError: 'NoneType' object has no attribute 'usage'
+
+ 原先以为是libvirt版本过低导致，经过升级至1.2.2发现还是一样的错误。因此，基本排除libvirt版本的原因。
+
+16，glance upload image的时候，可能会碰到403 access forbiden的情况，原因是非admin用户上传image且设置了ispublic=True属性。
+
+17，目前看来，ubuntu cloud image需要public key来登陆。具体问题和解决方案见gmail邮件。
+
+18，monit安装与配置见：
+http://www.tecmint.com/how-to-install-and-setup-monit-linux-process-and-services-monitoring-program/
+
+更多配置项参考bosh stemcell_builder和cf-release。
