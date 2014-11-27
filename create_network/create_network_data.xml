@@ -1,0 +1,6 @@
+<network>
+  <name>testNetwork</name>
+  <description>testNetwork</description>
+  <cidr>192.168.16.0/24</cidr> 
+  <routerUuid>789b3992-5200-4c3e-8985-8d689b4de289</routerUuid>
+</network>

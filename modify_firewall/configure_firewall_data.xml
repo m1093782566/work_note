@@ -1,0 +1,13 @@
+<list>
+  <firewallpolicy>
+    <name>test</name>
+    <description>description for firewall policy.</description>
+    <order>2</order>
+    <operation>1</operation>
+    <protocolType>0</protocolType>
+    <protocolValue>80-120</protocolValue>
+    <direction>1</direction>
+    <outerIp>10.10.10.10</outerIp>
+    <innerIp>10.10.10.0/24</innerIp>
+  </firewallpolicy>
+</list>

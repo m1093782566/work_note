@@ -1,0 +1,8 @@
+<server>
+<name>newServer</name>
+<description>Desc for newServer.</description>
+  <imageUuid>70a599e0-31e7-49b7-b260-868f441e862b</imageUuid>
+  <networkUuid>f06acace-ca38-41d9-aa79-dce30e6ccb4c</networkUuid>
+  <vcpu>2</vcpu>
+  <memory>4</memory>
+</server>

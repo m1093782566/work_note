@@ -1,0 +1,14 @@
+<image>
+  <name>image01</name>
+  <description>image01 add test。</description>
+  <minDisk>2</minDisk>
+  <minRam>512</minRam>
+  <format>qcow2</format> 
+  <vmwareOstype>rhel6_64Guest</vmwareOstype>
+  <vmwareDisktype>sparse</vmwareDisktype>
+  <vmwareAdaptertype>lsiLogic</vmwareAdaptertype> 
+  <hypervisorType>vmware</hypervisorType>
+  <casOstype>linux|Red Hat Enterprise Linux6(64-bit)</casOstype>
+  <casDisktype>virtio</casDisktype> 
+  <hwVifModel>virtio</hwVifModel>
+</image>

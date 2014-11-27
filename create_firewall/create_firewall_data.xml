@@ -1,0 +1,5 @@
+<firewall>
+  <name>fw_test</name>
+  <description>测试创建防火墙</description> 
+  <type>0</type>
+</firewall>

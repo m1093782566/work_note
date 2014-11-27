@@ -1,0 +1,5 @@
+<router>
+   <name>testRouter</name>
+   <description>testRouter</description>
+   <firewallid>1</firewallid>
+</router>
